@@ -1,4 +1,4 @@
-import { Outlet, createBrowserRouter } from "react-router-dom"
+import { Navigate, Outlet, createBrowserRouter } from "react-router-dom"
 import { Home } from "./pages/Home"
 import { Store } from "./pages/Store"
 import { About } from "./pages/About"
@@ -6,26 +6,25 @@ import { Navbar } from "./Navbar"
 import { Team } from "./pages/Team"
 import { TeamMember } from "./pages/TeamMember"
 import { TeamNav } from "./TeamNav"
+import { NewTeamMember } from "./pages/NewTeamMember"
 
 export const router = createBrowserRouter([
     {
         element: <NavLayout />,
-        errorElement: <h1>Error</h1>,
         children: [
             { path: "/", element: <Home /> },
-            {
-                path: "/store",
-                errorElement: <h1>Error</h1>,
-                element: <Store />,
-            },
+            // { path: "/test/*", element: <h1>Test</h1> },//ability to add extra url text end not gate 404
+            // { path: "*", element: <h1>404</h1> },//how to use it for deliberate 404
+            { path: "*", element: <Navigate to='/' /> },//how to use it for not login or...
+            { path: "/store", element: <Store /> },
             { path: "/about", element: <About /> },
             {
                 path: "/team",
                 element: <TeamNavLayout />,
                 children: [
                     { index: true, element: <Team /> },
-                    { path: "joe", element: <TeamMember name="joe" /> },
-                    { path: "sally", element: <TeamMember name="sally" /> },
+                    { path: ":memberId", element: <TeamMember /> },
+                    { path: "new", element: <NewTeamMember /> },//router is more specific and be call first before :memberId
                 ],
             },
         ],
